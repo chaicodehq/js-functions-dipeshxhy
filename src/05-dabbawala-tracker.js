@@ -50,4 +50,65 @@
  */
 export function createDabbawala(name, area) {
   // Your code here
+  if(!name || !area) return -1
+  let deliveries=[]
+  let nextId=0;
+  return {
+      addDelivery(from,to){
+        if(!from || !to) return -1
+        nextId++;
+        const delivery ={
+          id:nextId,
+          from,
+          to,
+          status:'pending'
+        }
+        deliveries.push(delivery)
+        return nextId;
+      },
+      completeDelivery(id){
+        let delivery = deliveries.find(delivery=>delivery.id===id)
+
+        if(!delivery || delivery.status==="completed") return false
+        
+
+          delivery.status="completed"
+        return true
+      },
+      getActiveDeliveries(){
+       return deliveries.filter(delivery=>delivery.status==="pending").map(d=>({...d}))
+        
+
+      },
+      getStats(){
+        
+        const total = deliveries.length
+        
+
+          const completed= deliveries.filter(delivery=>delivery.status==="completed").length
+         const  pending =total-completed
+         const successRate=total===0 ? "0.00%": ((completed/total)*100).toFixed(2)+"%"
+        return {
+          name,area,successRate,total,completed,pending
+        }
+      },
+      reset(){
+        deliveries=[]
+        nextId=0
+        return true
+      }
+
 }
+}
+
+const ram = createDabbawala('Ram', 'Dadar')
+console.log(ram.addDelivery('Andheri', 'Churchgate'))
+console.log(ram.addDelivery('Bandra', 'CST'))
+console.log(ram.completeDelivery(1))
+console.log(ram.deliveries)
+const stats=ram.getStats()
+console.log(stats.name)
+console.log(stats.area)
+console.log(stats.total)
+console.log(stats.completed)
+console.log(stats.pending)
