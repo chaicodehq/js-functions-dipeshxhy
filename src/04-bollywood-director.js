@@ -7,7 +7,7 @@
  *
  * Functions:
  *
- *   1. createDialogueWriter(genre)
+ *   1. createDialogueWriter(genre)5jk75e32 
  *      - Factory: returns a function (hero, villain) => string
  *      - Genres and their dialogue templates:
  *        "action"  => `${hero} says: 'Tujhe toh main dekh lunga, ${villain}!'`
@@ -46,12 +46,68 @@
  */
 export function createDialogueWriter(genre) {
   // Your code here
+  const genresWithDialogues ={
+    action:'Tujhe toh main dekh lunga',
+    romance:'tum mere liye sab kuch ho',
+    comedy:'bhai, kya kar rahe ho yaar!',
+    drama:"tune mera sab kuch cheen liya!"
+  }
+  if(!genre) return null
+  const genres = Object.keys(genresWithDialogues)
+  if(!genres.includes(genre)) return null
+  return function(hero,villain){
+    if(!hero ||!villain) return "..."
+    let dialogue;
+    switch(genre){
+      case genres[0]:
+        dialogue=`${hero} says: '${genresWithDialogues.action}, ${villain}!'`
+        break;
+      case genres[1]:
+        dialogue=`${hero} whispers: '${villain}, ${genresWithDialogues.romance}'`
+        break;
+      case genres[2]:
+        dialogue=`${hero} laughs: '${villain} ${genresWithDialogues.comedy}'`
+        break;
+      case genres[3]:
+        dialogue=`${hero} cries: '${villain}, ${genresWithDialogues.drama}'`
+        break;
+      default:
+        return null
+    }
+    return dialogue;
+  }
+
 }
 
 export function createTicketPricer(basePrice) {
   // Your code here
+  if(!basePrice || basePrice <=0) return null
+  const multipliers ={
+    silver:1,
+    gold:1.5,
+    platinum:2
+  }
+  return function(seatType,isWeekend=false){
+    const seats = Object.keys(multipliers)
+    if(!seats.includes(seatType)) return null
+    let price = multipliers[seatType] * basePrice
+    if(isWeekend) price *=1.3
+    return Math.ceil(price)
+  }
 }
 
 export function createRatingCalculator(weights) {
   // Your code here
+  if(!weights || typeof weights !=="object") return null
+  return function(scores){
+    if(!scores || typeof scores !=="object") return null
+    const weightValues = Object.values(weights)
+    const scoreValues = Object.values(scores)
+    let sum=0
+    for(let i =0;i<weightValues.length;i++){
+      
+sum+=weightValues[i] * scoreValues[i]
+    }
+    return parseFloat((sum).toFixed(1))
+  }
 }
