@@ -46,16 +46,77 @@
  */
 export function createFilter(field, operator, value) {
   // Your code here
+  const operators = ['<','<=', '>','>=',"==="]
+
+  return function(obj){
+    if(field in obj){
+      switch(operator){
+    case '>':
+      return obj[field] > value
+    case '<':
+      return obj[field] < value
+    case '>=':
+      return obj[field] >= value
+    case '<=':
+      return obj[field] <= value
+    case '===':
+      return obj[field] === value
+    default:
+      return false
+  }
+  
+}
+  }
 }
 
 export function createSorter(field, order = "asc") {
   // Your code here
+  return function(a,b){
+    if( typeof a[field]==='number' && typeof b[field] ==="number"){
+      if(order==="asc") return a[field] - b[field]
+      else return b[field] - a[field]
+    }
+    if( typeof a[field]==='string' && typeof b[field] ==="string"){
+      if(order==="asc") return a[field].localeCompare(b[field])
+      else return b[field].localeCompare(a[field])
+    }
+  }
 }
 
 export function createMapper(fields) {
   // Your code here
+  return function(obj){
+    const res={}
+    
+      for(let field of fields ){
+      res[field]=obj[field]
+    }
+    return res
+    
+ 
+  }
 }
 
 export function applyOperations(data, ...operations) {
   // Your code here
+let result;
+if(!Array.isArray(data)) return []
+if(operations.length ===0) return data
+result = operations[0](data)
+for(let i=1;i<operations.length;i++){
+  result=  operations[i](result)
+  }
+  return result
+  
 }
+
+const dhabas = [
+    { name: 'Punjab Dhaba', rating: 4.5, price: 200, city: 'Delhi' },
+    { name: 'Sharma Ji', rating: 3.8, price: 150, city: 'Jaipur' },
+    { name: 'Highway King', rating: 4.0, price: 300, city: 'Delhi' },
+    { name: 'Truck Stop', rating: 3.2, price: 100, city: 'Agra' },
+  ];
+
+  
+      
+
