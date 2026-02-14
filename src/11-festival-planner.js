@@ -50,4 +50,53 @@
  */
 export function createFestivalManager() {
   // Your code here
+  const festivals=[]
+  return {
+    addFestival(name, date, type){
+      const types=["cultural", "religious","national"]
+      if(!name || typeof date !=="string" || !types.includes(type) ) return -1
+      
+      return festivals.push({name, date, type})
+      festivals.map(fest=>fest.name===name).length===1
+    },
+    removeFestival(name){
+     const fest = festivals.findIndex(fes=>fes.name===name)
+     if(fest> -1){
+      festivals.splice(fest,1)
+      return true
+     }
+     return false
+    },
+    getAll(){
+      return festivals.slice()
+    },
+    getByType(type){
+      return festivals.filter(fes=>fes.type===type)
+    },
+    getUpcoming(currentDate, n = 3){
+      
+      const results = festivals.filter(fes=>new Date(fes.date) >= new Date(currentDate))
+      if(results.length >= n){
+        console.log(results)
+        console.log(results.slice(0,n))
+        return results.sort((a,b)=>new Date(a.date)- new Date(b.date)).slice(0,n)
+      }else{
+        return results.sort((a,b)=>new Date(a.date)-new Date(b.date))
+      }
+      
+    },
+    getCount(){
+      return festivals.length
+    }
+
+  }
 }
+const manager = createFestivalManager()
+
+      manager.addFestival('Diwali', '2025-10-20', 'religious');
+      manager.addFestival('Republic Day', '2025-01-26', 'national');
+      manager.addFestival('Holi', '2025-03-14', 'cultural');
+      manager.addFestival('Independence Day', '2025-08-15', 'national');
+
+      const upcoming = manager.getUpcoming('2025-02-01', 2);
+      console.log(upcoming)
