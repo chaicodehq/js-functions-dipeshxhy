@@ -54,20 +54,80 @@
  */
 export function repeatChar(char, n) {
   // Your code here
+  if (!char || typeof char !== 'string') return '';
+  if (n <= 0) return '';
+  return char + repeatChar(char, n - 1);
 }
 
 export function sumNestedArray(arr) {
   // Your code here
+  if(!arr || !Array.isArray(arr)) return 0
+  let sum = 0;
+  for (let el of arr) {
+    if (Array.isArray(el)) {
+      sum += sumNestedArray(el);
+    } else {
+      if (typeof el !== 'number') continue;
+      sum += el;
+    }
+  }
+  return sum;
 }
 
 export function flattenArray(arr) {
   // Your code here
+  if (!Array.isArray(arr)) return [];
+  let results = [];
+  for (let el of arr) {
+    if (Array.isArray(el)) {
+      results = results.concat(flattenArray(el));
+    } else {
+      results.push(el);
+    }
+  }
+  return results;
 }
 
 export function isPalindrome(str) {
   // Your code here
+  if( typeof str!=="string") return false
+  const length = str.length;
+  if (length <= 1) return true;
+  if (str[0].toLowerCase() !== str[length - 1].toLowerCase()) return false;
+  else return isPalindrome(str.slice(1, length - 1));
 }
 
 export function generatePattern(n) {
   // Your code here
+  if (!Number.isInteger(n) || n <= 0) {
+    return [];
+  }
+
+  // recursive function to build ascending part
+  function buildAscending(k) {
+    if (k === 1) {
+      return ["*"];
+    }
+
+    const previous = buildAscending(k - 1);
+    const currentLine = "*".repeat(k);
+
+    return [...previous, currentLine];
+  }
+
+  const ascending = buildAscending(n);
+
+  // mirror part (remove last to avoid duplicate peak)
+  const descending = [...ascending]
+    .slice(0, -1)
+    .reverse();
+
+  return [...ascending, ...descending];
+
+
 }
+
+// console.log(sumNestedArray([1,[2,3,'a'],[3,'1']]))
+
+// console.log(flattenArray([1,[2,3]]))
+console.log(generatePattern(5))
