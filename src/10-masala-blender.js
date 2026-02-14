@@ -54,28 +54,83 @@
  */
 export function pipe(...fns) {
   // Your code here
+  return function (x){
+    if(fns.length===0) return x
+    let result=fns[0](x) ;
+    for(let i =1;i<fns.length;i++){
+      result = fns[i](result)
+    }
+    return result
+  }
 }
 
 export function compose(...fns) {
   // Your code here
+   return function (x){
+    if(fns.length ===0) return x
+    let result =fns[fns.length-1](x);
+    for(let i =fns.length-2;i>=0;i--){
+      result = fns[i](result)
+    }
+    return result
+  }
 }
 
 export function grind(spice) {
   // Your code here
+  return { ...spice, form: "powder" }
 }
 
 export function roast(spice) {
   // Your code here
+  return { ...spice, roasted: true, aroma: "strong" }
 }
 
 export function mix(spice) {
   // Your code here
+  return { ...spice, mixed: true }
 }
 
 export function pack(spice) {
   // Your code here
+  return { ...spice, packed: true, label: `${spice.name} Masala` }
 }
 
 export function createRecipe(steps) {
   // Your code here
+  const orders=['grind', "pack","roast","mix"]
+  let fn=[];
+  if(steps===null) return x=>x
+  for(let i=0;i<steps.length;i++){
+    if(!orders.includes(steps[i]))continue
+    
+    switch(steps[i]){
+      case "grind":
+      fn.push(grind)
+      break;
+      case "pack":
+       fn.push(pack)
+      break;
+      case "mix":
+       fn.push(mix)
+      break;
+      case "roast":
+       fn.push(roast)
+      break;
+      default:
+      return 
+    }
+  }
+  console.log(fn)
+  return function(x){
+    if(fn===null || fn.length ===0 ) return x
+    let result = fn[0](x)
+    for(let fun of fn){
+      result = fun(result)
+    }
+    return result
+  }
 }
+
+     const result = pipe(x => x + 1, x => x * 2)(3);
+ console.log(result)
