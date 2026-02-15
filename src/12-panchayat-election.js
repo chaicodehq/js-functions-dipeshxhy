@@ -65,6 +65,29 @@
  */
 export function createElection(candidates) {
   // Your code here
+
+const votes =[]
+const registeredVoters = []
+return {
+  registerVoter(voter){
+    if(!voter) return false
+    if(registeredVoters.map(v=>v.id===voter.id).length===1) return false;
+    if(voter.age < 18) return false;
+    registeredVoters.push(voter)
+    return true
+  },
+  castVote(voterId,candidateId,onSuccess,onError){
+    let res
+    const isExists = registeredVoters.find(v=>v.id===voterId)
+    if(isExists){
+      return onSuccess({voterId, candidateId})
+    }else{
+       res= onError('VoterId not found!')
+    } 
+    return res
+  },
+}
+
 }
 
 export function createVoteValidator(rules) {
@@ -78,3 +101,13 @@ export function countVotesInRegions(regionTree) {
 export function tallyPure(currentTally, candidateId) {
   // Your code here
 }
+
+ const candidates = [
+    { id: 'C1', name: 'Sarpanch Ram', party: 'Janata' },
+    { id: 'C2', name: 'Pradhan Sita', party: 'Lok' },
+    { id: 'C3', name: 'Mukhiya Gita', party: 'Samaj' },
+  ];
+  const  election = createElection(candidates);
+     election.registerVoter({ id: 'V1', name: 'Mohan', age: 25 });
+        const result = election.castVote('V1', 'C1', () => 42, () => -1);
+        console.log(result)

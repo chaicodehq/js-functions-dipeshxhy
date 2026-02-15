@@ -56,8 +56,13 @@ export function createFestivalManager() {
       const types=["cultural", "religious","national"]
       if(!name || typeof date !=="string" || !types.includes(type) ) return -1
       
+      if(festivals.findIndex(fest=>fest.name===name)!==-1){
+      festivals.splice(festivals.findIndex(fest=>fest.name===name),1)
+      return -1
+      }
       return festivals.push({name, date, type})
-      festivals.map(fest=>fest.name===name).length===1
+      console.log(festivals)
+     
     },
     removeFestival(name){
      const fest = festivals.findIndex(fes=>fes.name===name)
@@ -98,5 +103,7 @@ const manager = createFestivalManager()
       manager.addFestival('Holi', '2025-03-14', 'cultural');
       manager.addFestival('Independence Day', '2025-08-15', 'national');
 
-      const upcoming = manager.getUpcoming('2025-02-01', 2);
-      console.log(upcoming)
+       manager.addFestival('Diwali', '2025-10-20', 'religious');
+
+      // const upcoming = manager.getUpcoming('2025-02-01', 2);
+      // console.log(upcoming)

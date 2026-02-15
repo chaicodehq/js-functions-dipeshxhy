@@ -127,7 +127,4 @@ export function generatePattern(n) {
 
 }
 
-// console.log(sumNestedArray([1,[2,3,'a'],[3,'1']]))
 
-// console.log(flattenArray([1,[2,3]]))
-console.log(generatePattern(5))

@@ -104,7 +104,7 @@ describe('08 - Highway Dhaba Rating System: Higher-Order Functions (8 pts)', () 
     });
   });
 
-  describe('applyOperations', () => {
+  describe('applyOperations', () => { 
     test('chains filter then sort then map operations', () => {
       const filterHighRated = arr => arr.filter(createFilter('rating', '>=', 4));
       const sortByRating = arr => [...arr].sort(createSorter('rating', 'desc'));
